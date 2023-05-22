@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "market-zem",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -9,7 +9,16 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@types/node": "^18",
-    "nuxt": "^3.5.0"
+    "nuxt": "^3.5.0",
+    "sass": "^1.62.1",
+    "sass-loader": "^13.2.2"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.4.11",
+    "@vee-validate/nuxt": "^4.9.4",
+    "bootstrap": "^5.2.3",
+    "pinia": "^2.1.1"
   }
 }
