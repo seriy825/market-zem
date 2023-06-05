@@ -19,6 +19,12 @@
     "@pinia/nuxt": "^0.4.11",
     "@vee-validate/nuxt": "^4.9.4",
     "bootstrap": "^5.2.3",
-    "pinia": "^2.1.1"
+    "bootstrap-icons": "^1.10.5",
+    "laravel-vue-pagination": "^4.1.0",
+    "maska": "^2.1.9",
+    "nuxt-swiper": "^1.1.0",
+    "pinia": "^2.1.1",
+    "vue-select": "^4.0.0-beta.6",
+    "vue3-tel-input": "^1.0.4"
   }
 }

@@ -33,7 +33,7 @@
                           </ErrorMessage>
                       </div>
                       <div class="form-group col-10 my-2 required">
-                          <label for="password_confirmation" class="control-label">Пітдверждення паролю</label>
+                          <label for="password_confirmation" class="control-label">Підтверждення паролю</label>
                           <Field v-model="user.password_confirmation" :rules="isConfirmedPassword" name="password_confirmation"  :validateOnInput=true v-slot="{field,errors}">
                             <input type='password' id="password_confirmation" class="form-control" :class="errors.length>0&&'border border-danger'" autocomplete="on" v-bind="field"/>
                           </Field>
@@ -47,6 +47,24 @@
                             <input type="date" id="birthdate" class="form-control" autocomplete="on" :class="errors.length>0&&'border border-danger'" v-bind="field"/>
                           </Field>
                           <ErrorMessage name="birthdate" v-slot="{ message }">
+                            <span class="text-danger">{{ message }}</span>
+                          </ErrorMessage>
+                      </div>
+                      <div class="form-group col-10 my-2 required">
+                          <label for="phone" class="control-label">Номер телефону</label>
+                          <Field v-model="user.phone" :rules="isPhone" name="phone"    v-slot="{field,errors}">
+                            <vue-tel-input 
+                              v-model="user.phone" 
+                              :onlyCountries="['UA']" 
+                              :defaultCountry="'UA'" 
+                              mode="international" 
+                              :inputOptions="{maxlength:16}" 
+                              class="form-control" 
+                              :class="errors.length>0&&'border border-danger'" 
+                              v-bind="field"
+                            />
+                          </Field>
+                          <ErrorMessage name="phone" v-slot="{ message }">
                             <span class="text-danger">{{ message }}</span>
                           </ErrorMessage>
                       </div>
@@ -67,11 +85,14 @@
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import { mapActions } from 'pinia';
 import { useAuthStore } from '~/store/auth';
+import { VueTelInput } from 'vue3-tel-input'
+import 'vue3-tel-input/dist/vue3-tel-input.css'
 export default {
   components:{
     Form,
     Field,
-    ErrorMessage
+    ErrorMessage,
+    VueTelInput,
   },
   data(){
       return {
@@ -81,6 +102,7 @@ export default {
           password:'',
           password_confirmation:'',
           birthdate:'',
+          phone:''
         },
         validationErrors:{},
         processing:false
@@ -94,45 +116,46 @@ export default {
       return response?.status==200;
     },
     isEmail(value){
-      if (!value) {
-        return 'This field is required';
-      }
+      if (!value)
+        return 'Це поле обов\'язкове!';
       const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-      if (!regex.test(value)) {
-        return 'This field must be a valid email';
-      }
+      if (!regex.test(value)) 
+        return 'Це поле має бути коректною адресою електронної пошти!';
       return true;
     },
     isName(value){
-      if (!value) {
-        return 'This field is required';
-      }
+      if (!value) 
+        return 'Це поле обов\'язкове!';
       if (value.length<4)
-        return 'Name must be at least 4 characters long.';
+        return 'Ім\'я має бути не менше 4и символів у довжину.';
       return true;
     },
     isPassword(value){
-      if (!value) {
-        return 'This field is required';
-      }
+      if (!value) 
+        return 'Це поле обов\'язкове!';
       if (value.length<8)
-        return 'Password must be at least 8 characters long.';
+        return 'Пароль має бути не менше 8и символів у довжину.';
       return true;
     },
     isConfirmedPassword(value){
-      if (!value) {
-        return 'This field is required';
-      }
+      if (!value)
+        return 'Це поле обов\'язкове!';
       if (value.length<8)
-        return 'Confirmed password must be at least 8 characters long.';
+        return 'Пароль має бути не менше 8и символів у довжину.';
       if (value!=this.user.password)
-        return 'Password confirmation does not match password.';
+        return 'Підтвердження паролю не співпадає!';
       return true;
     },
     isValidDate(value){
-      if (value.length==0) {
-        return 'This field is required';
-      }
+      if (value.length==0) 
+        return 'Це поле обов\'язкове!';
+      return true;
+    },
+    isPhone(value){
+      if (!value)
+        return 'Це поле обов\'язкове!';
+      if (!value.match(/^\+[0-9]{3}\s\d{2}\s\d{3}\s\d{4}/))
+        return 'Це поле має бути коректним номером телефону!'
       return true;
     }
   }

@@ -1,12 +1,8 @@
 <template>
   <div class="container">
-    123
+    <TheHero/>
+    <TheStats/>
+    <TheSearch/>
+    <TheListings/>
   </div>
 </template>
-<script>
-  export default{
-    mounted(){
-
-    }
-  }
-</script>

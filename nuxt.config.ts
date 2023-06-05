@@ -4,7 +4,7 @@ export default defineNuxtConfig({
         head:{
             charset: 'utf-8',
             viewport: 'width=device-width, initial-scale=1',
-            title:'MarketZem',
+            title:'МаркетЗем',
             script:[
                 {
                     src:'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js',
@@ -31,9 +31,10 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         '@pinia-plugin-persistedstate/nuxt',
-        '@vee-validate/nuxt',        
+        '@vee-validate/nuxt',   
+        'nuxt-swiper'
     ],
     veeValidate: {        
         autoImports: true,        
-    },     
+    }
 })
