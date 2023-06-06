@@ -61,6 +61,7 @@
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import { mapActions, mapState } from 'pinia';
 import { useUserStore } from '~/store/user';
+import { useAuthStore } from '~/store/auth';
 import { VueTelInput } from 'vue3-tel-input'
 import 'vue3-tel-input/dist/vue3-tel-input.css'
   export default{
@@ -81,13 +82,13 @@ import 'vue3-tel-input/dist/vue3-tel-input.css'
       }
     },
     computed:{
-      ...mapState(useUserStore,['user']),
+      ...mapState(useAuthStore,['user']),
     },
     async mounted(){
-      await this.fetchUser().then(this.updatedUser=this.user);
+      this.updatedUser=this.user;
     },
     methods:{
-      ...mapActions(useUserStore,['fetchUser','updateUser']),
+      ...mapActions(useUserStore,['updateUser']),
       async update(){
         await this.updateUser(this.updatedUser);
         this.updateShow=!this.updateShow;

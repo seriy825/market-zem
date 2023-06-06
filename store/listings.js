@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { useUserStore } from "./user";
 import { useAuthStore } from "./auth";
 
 export const useListingStore = defineStore("listings", {
@@ -65,7 +64,7 @@ export const useListingStore = defineStore("listings", {
       },   
       async fetchListingsByUser(data){
         try{          
-          const {id} = useUserStore().user;          
+          const {id} = useAuthStore().user;          
           return await $fetch(useRuntimeConfig().public.backendUrl+'/api/user/listings/'+id+data).then(response=>{ 
             this.listings = response.data;
             this.total=response.total;
@@ -82,6 +81,25 @@ export const useListingStore = defineStore("listings", {
           console.error(err);
         }
       },  
+      async fetchFavoritesByUser(data){
+        try{          
+          const {id} = useAuthStore().user;          
+          return await $fetch(useRuntimeConfig().public.backendUrl+'/api/user/favorites/'+id+data).then(response=>{ 
+            this.listings = response.data;
+            this.total=response.total;
+            this.current_page=response.current_page;
+            this.per_page=response.per_page;
+            this.next_page_url=response.next_page_url;
+            this.prev_page_url=response.prev_page_url;
+            this.first_page_url=response.first_page_url;
+            this.last_page_url=response.last_page_url;
+            this.path=response.path;
+          })
+        }
+        catch(err){
+          console.error(err);
+        }
+      }, 
       async fetchListingsForAdmin(data){
         try{          
           data ? data+='&approved=0' : data='?approved=0';
@@ -122,7 +140,41 @@ export const useListingStore = defineStore("listings", {
         });
         const index = this.listings=this.listings.map(listing=>listing.id).indexOf(listingId);
         this.listings.splice(index,1);
-      }  
+      },
+      async addToFavorites(listingId){
+        const {token} = useAuthStore();
+        await $fetch(useRuntimeConfig().public.backendUrl+'/api/listings/'+listingId+'/add',{
+          method:'POST',
+          body:{token},
+        });
+        if (this.listings){
+          const index = this.listings.map(listing=>listing.id).indexOf(listingId);
+          this.listings[index].favorites.push(useAuthStore().user); 
+        }        
+      },
+      async removeFromFavorites(listingId){
+        const {token} = useAuthStore();
+        await $fetch(useRuntimeConfig().public.backendUrl+'/api/listings/'+listingId+'/remove',{
+          method:'DELETE',
+          body:{token},
+        });
+        if (this.listings){
+          const listingIndex = this.listings.map(listing=>listing.id).indexOf(listingId);
+          const favoriteIndex = this.listings[listingIndex].favorites.map(user=>user.id).indexOf(useAuthStore().user.id);          
+          if (useRoute().path==='/user/favorites'){
+            this.listings.splice(listingIndex,1);
+          }          
+          else{
+            this.listings[listingIndex].favorites.splice(favoriteIndex,1);
+          }
+        }
+      },
+      async deleteListing(listingId){
+        await $fetch(useRuntimeConfig().public.backendUrl+'/api/listings/'+listingId,{
+          method:'DELETE',
+        });
+        useRouter().push({path:'/'});
+      }
   },
   persist: true,
 });

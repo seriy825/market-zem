@@ -5,6 +5,7 @@ export const useAuthStore = defineStore("auth", {
       return {
           token:null,
           role:null,
+          user:null,
       };
   },
   getters: {
@@ -19,6 +20,7 @@ export const useAuthStore = defineStore("auth", {
         }).then(response=>{
           if (response.token){
             this.token = response.token;
+            this.user=response.user;
             this.role = response.role;            
             localStorage.setItem('token',this.token);
             this.role=='admin'?useRouter().push({path:'/admin'}):useRouter().push({path:'/'});
@@ -30,9 +32,12 @@ export const useAuthStore = defineStore("auth", {
           method:'POST',
           body:data,
         }).then(response=>{
-          this.token = response;
-          localStorage.setItem('token',this.token); 
-          router.push({path:'/'});         
+          if (response.token){
+            this.token = response.token;
+            this.user=response.user
+            localStorage.setItem('token',this.token); 
+            router.push({path:'/'});         
+          }
         });                        
       },
       async logout(){    
@@ -43,6 +48,7 @@ export const useAuthStore = defineStore("auth", {
         localStorage.removeItem('token');
         this.token=null;
         this.role=null;        
+        this.user=null;       
       }
   },
   persist: true,
