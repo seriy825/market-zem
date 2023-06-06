@@ -25,6 +25,7 @@ export const useAuthStore = defineStore("auth", {
             localStorage.setItem('token',this.token);
             this.role=='admin'?useRouter().push({path:'/admin'}):useRouter().push({path:'/'});
           }
+          return response;
         })
       },
       async register(data){
@@ -36,8 +37,9 @@ export const useAuthStore = defineStore("auth", {
             this.token = response.token;
             this.user=response.user
             localStorage.setItem('token',this.token); 
-            router.push({path:'/'});         
+            useRouter().push({path:'/'});         
           }
+          return response;
         });                        
       },
       async logout(){    
