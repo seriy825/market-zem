@@ -27,26 +27,31 @@
           <p>{{ convertCity(listing.city.community) }}, {{ convertCity(listing.city.region) }}</p>
           <p >Продавець : {{ listing.user?.name }}</p>
           <p v-if="show">Номер телефону : {{ listing.user?.phone }}</p>
-          <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal">
+          <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal" v-if="!isAdmin">
             Задати питання
           </button>        
-          <button class="btn btn-danger fw-bold mx-sm-2 my-sm-0 my-2" data-bs-toggle="modal" data-bs-target="#delete" v-if="listing.user.id===user.id">
+          <button class="btn btn-danger fw-bold mx-sm-2 my-sm-0 my-2" data-bs-toggle="modal" data-bs-target="#delete" v-if="listing.user.id===user?.id||isAdmin">
             Видалити оголошення
           </button>   
         </div>
         <div class="row align-items-center">
-          <span class="clickable col" @click="showPhone">{{show?'Сховати номер телефону':'Переглянути номер телефону'}}</span>
+          <span class="clickable col" v-if="authenticated" @click="showPhone">{{show?'Сховати номер телефону':'Переглянути номер телефону'}}</span>
           <p class="col">Створено {{ convertDate(listing.created_at) }}</p>
-          <button class="btn col" @click.prevent="removeListingFromFavorites()" v-if="checkFavoriteListing()">
+          <button class="btn col" @click.prevent="removeListingFromFavorites()" v-if="checkFavoriteListing()&&!isAdmin">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
             </svg>
           </button>
-          <button class="btn col" @click.prevent="addListingToFavorites()" v-else>
+          <button class="btn col" @click.prevent="addListingToFavorites()" v-else-if="!isAdmin&&authenticated">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="" class="bi bi-heart" viewBox="0 0 16 16">
               <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
             </svg>
           </button>
+          <NuxtLink to="/auth/login" class="btn col" v-else-if="!authenticated">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="" class="bi bi-heart" viewBox="0 0 16 16">
+              <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+            </svg>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -54,21 +59,22 @@
     <div class="row mb-5 text-center">
       <div class="col-md-4 col-sm-12">
         <h6 class="fw-bold">Статус оренди</h6>
-        <p>{{ listing.rental_status?'в оренді'+listing.rental_status:'Не вказано' }}</p>
+        <p>{{ listing.rental_status?'в оренді до '+listing.rental_status:'Не вказано' }}</p>
       </div>
       <div class="col-md-4 col-sm-12">
         <h6 class="fw-bold">Загальна орендна плата</h6>
-        <p>{{ listing.rental_price?listing.rental_price:'Не вказано' }}</p>
+        <p>{{ listing.rental_price?listing.rental_price+'₴':'Не вказано' }}</p>
       </div>
       <div class="col-md-4 col-sm-12">
         <h6 class="fw-bold">Нормативна грошова оцінка</h6>
-        <p>{{ listing.price?listing.price:'Не вказано' }}</p>
+        <p>{{ listing.price?listing.price+'₴':'Не вказано' }}</p>
       </div>
     </div>
     <h6 class="fw-bold">Цільове призначення : {{ listing?.assignment.name }}</h6>
     <p class="fw-bold">Опис ділянки</p>
     <p class="mb-5">{{ listing.description }}</p>
-    <a :href="'https://kadastr.live/parcel/'+listing.cadastral_number" class="mb-5">Більше інформації ви можете переглянути за цим посиланням</a>
+    <a :href="'https://kadastr.live/parcel/'+listing.cadastral_number" class="mb-5" v-if="authenticated">Більше інформації ви можете переглянути за цим посиланням</a>
+    <NuxtLink to="/auth/login" class="mb-5" v-else>Більше інформації ви можете переглянути за цим посиланням</NuxtLink>
   </section>
   <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -118,7 +124,7 @@ import { useAuthStore } from '~/store/auth';
       }
     },
     computed:{
-      ...mapState(useAuthStore,['user']),
+      ...mapState(useAuthStore,['user','isAdmin','authenticated']),
     },
     async mounted(){
       this.listing = await this.fetchListing(this.$route.params.id);
@@ -133,10 +139,10 @@ import { useAuthStore } from '~/store/auth';
       },
       convertDate(field){
         const date = new Date(field);
-        const day = date.getDate()>10?date.getDate():'0'+date.getDate();
-        const month = date.getMonth()>10?date.getMonth():'0'+date.getMonth();
-        const hours = date.getHours()>10?date.getHours():'0'+date.getHours();
-        const minutes = date.getMinutes()>10?date.getMinutes():'0'+date.getMinutes();
+        const day = date.getDate()>=10?date.getDate():'0'+date.getDate();
+        const month = date.getMonth()>=10?date.getMonth():'0'+date.getMonth();
+        const hours = date.getHours()>=10?date.getHours():'0'+date.getHours();
+        const minutes = date.getMinutes()>=10?date.getMinutes():'0'+date.getMinutes();
         return day+"."+month+"."+date.getFullYear()+", "+hours+":"+minutes+".";
       },
       async addListingToFavorites(){
@@ -149,7 +155,7 @@ import { useAuthStore } from '~/store/auth';
       },
       checkFavoriteListing(){
         if (this.listing.favorites)
-          return this.listing.favorites.find(item=>item.id===this.user.id);
+          return this.listing.favorites.find(item=>item.id===this.user?.id);
         else
           return false;
       }
