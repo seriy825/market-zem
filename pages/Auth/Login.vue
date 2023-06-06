@@ -1,10 +1,10 @@
 <template>
   <div class="container">
       <div class="d-flex align-items-center justify-content-center">
-          <div class="card">
+          <div class="card mb-5">
               <div class="card-body mb-5">
                 <h1 class="text-center my-3">Вхід</h1>
-                <div class="alert alert-danger" role="alert" v-if="error">
+                <div class="alert alert-danger mx-5 text-center" role="alert" v-if="error">
                     <ul class="mb-0">
                         <li>{{ error }}</li>
                     </ul>
@@ -65,10 +65,13 @@ export default {
         ...mapActions(useAuthStore,['login']),    
         async handleSubmit(data){       
             this.processing=!this.processing;
-            const response = await this.login(data).then(this.processing=!this.processing).catch(err=>{
-                if (err) this.error = 'Не правильно введена пошта або пароль!';
+            await this.login(data).then(this.processing=!this.processing).catch(err=>{
+                if (err) {
+                    this.error = 'Не правильно введена пошта або пароль!';
+                    return false;
+                }                
             });
-            return response?.status===200;
+            return true;
         },
         isEmail(value){
             if (!value) {
@@ -102,21 +105,31 @@ export default {
       background-color: #FEA2048C;
       box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
       .btn{
-          padding:10px 50px;
-          font-size:20px;
-          border-radius: 20px;
+        padding:10px 50px;
+        font-size:20px;
+        border-radius: 20px;
+        @media (max-width:768px){
+            font-size:14px;
+        }
       }
       .form-control{
-          border-radius: 20px;
-          &:focus{
-            box-shadow: none;
-          }
+        border-radius: 20px;
+        @media (max-width:768px){
+            font-size:14px;
+        }
+        &:focus{
+        box-shadow: none;
+        }
+      }
+      @media (max-width:768px){
+        width:100%;
+        font-size:14px;
       }
       @media (min-width:768px) {
-          width:75%;
+        width:75%;
       }
       @media (min-width:992px) {
-          width:50%;
+        width:50%;
       }
   }
 </style>
