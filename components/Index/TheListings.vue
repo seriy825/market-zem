@@ -4,7 +4,7 @@
       <h2 class="listings-section_header" :style="$route.path=='/offers'||$route.path==='/user/offers'||$route.path==='/user/favorites'?'display:none':''">
         {{ isAdmin && !checkRoute() ? 'Оголошення очікуючі підтверждення':'Оголошення'}}
       </h2>
-      <div :class="$route.path!=='/'?'':'d-flex row'" v-if="listings.length>0">
+      <div :class="$route.path!=='/'?'':'d-flex row'" v-if="listings?.length>0">
         <div :class="$route.path!=='/'?'mt-5':'col-md-12 col-lg-6 col-xl-4 mt-4'" v-for="listing in listings" :key="listing.id">
           <Listing :listing="listing"/> 
         </div>                  
@@ -16,13 +16,14 @@
           </div>
         </div>   
         <div class="d-flex align-items-center justify-content-center flex-column" v-else>
-          <h3>{{isAdmin&&$route.path=='/admin'?'На жаль, поки немає нових оголошень, очікуючих підтверждення...':$route.path==='/user/offers'?'Ви ще не додали жодного оголошення!':'Поки що немає оголошень...'}}</h3>
-          <NuxtLink :to="{path:'/offers/create'}" class="btn btn-warning mt-5">Додати оголошення</NuxtLink>  
+          <h3>{{isAdmin&&$route.path=='/admin'?'На жаль, поки немає нових оголошень, очікуючих підтверждення...':$route.path==='/user/offers'?'Ви ще не додали жодного оголошення!':$route.path==='/user/favorites'?'Ви ще не додали жодного оголошення до обраних!':'Поки що немає оголошень...'}}</h3>
+          <NuxtLink v-if="$route.path==='/user/offers'" to="/offers/create" class="btn btn-warning mt-5">Додати оголошення</NuxtLink>
         </div>
       </div>
       <div class="listings-section_buttons d-flex justify-content-end" v-if="$route.path=='/'">
         <NuxtLink :to="{path:'/offers'}" class="btn listings-section_button" v-if="listings.length>0">Всі оголошення</NuxtLink>  
-        <NuxtLink :to="{path:'/offers/create'}" class="btn btn-warning" v-else>Додати оголошення</NuxtLink>  
+        <NuxtLink :to="{path:'/offers/create'}" class="btn btn-warning" v-else-if="authenticated">Додати оголошення</NuxtLink>  
+        <NuxtLink to="/auth/login" class="btn btn-warning" v-else >Додати оголошення</NuxtLink>
       </div>
       <div v-if="pages>1 && $route.path!=='/'">
         <nav class="mt-5 d-flex justify-content-end align-items-end">
@@ -75,7 +76,7 @@ import { useAuthStore } from '~/store/auth';
     },
     computed:{
       ...mapState(useListingStore,['listings','current_page','pages','next_page_url','prev_page_url','first_page_url','last_page_url','path']),
-      ...mapState(useAuthStore,['isAdmin']),
+      ...mapState(useAuthStore,['isAdmin','authenticated']),
     },
     async mounted(){
       if (this.isAdmin && !this.checkRoute()){
