@@ -11,7 +11,10 @@ export default defineNuxtConfig({
                     integrity:'sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4',
                     crossorigin:'anonymous',
                 }
-            ]    
+            ],
+            meta:[
+                {name:'google-site-verification',content:'wKgE4VlCreO64OFfT94eFIU7asFjSUdVMwICh_70zl8'}
+            ]
         },        
     },
     runtimeConfig:{

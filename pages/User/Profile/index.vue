@@ -1,7 +1,10 @@
 <template>    
   <NavBar></NavBar>
   <section class="user-section my-5">
-    <div class="row align-items-center justify-content-center text-center mt-5" v-if="!updateShow">
+    <div class="alert alert-danger text-center" role="alert" v-if="errors">
+      {{ this.errors }}
+    </div>
+    <div class="row align-items-center justify-content-center text-center mt-5" v-if="!updateShow">      
       <div class="col-lg-4 col-sm-4 col-12">
         <p>Прізвище та ім'я</p>
         <p class="fw-bold">{{ user.name }}</p>
@@ -83,15 +86,22 @@ import 'vue3-tel-input/dist/vue3-tel-input.css'
     },
     computed:{
       ...mapState(useAuthStore,['user']),
+      ...mapState(useUserStore,['errors'])
     },
     async mounted(){
       this.updatedUser=this.user;
+      this.clearErrors();
     },
     methods:{
-      ...mapActions(useUserStore,['updateUser']),
+      ...mapActions(useUserStore,['updateUser','clearErrors']),
       async update(){
         await this.updateUser(this.updatedUser);
-        this.updateShow=!this.updateShow;
+        if (!this.errors){
+          this.updateShow=!this.updateShow;
+        }
+        else{
+          this.updatedUser=this.user;
+        }
       },
       isPhone(value){
         if (!value)
