@@ -71,6 +71,13 @@ import { useAuthStore } from '~/store/auth';
           }
         }
       }
+      &-heart-fill{
+        &:hover{
+          path{
+            fill:black;
+          }
+        }
+      }
       &-chat-right{
         &:hover{
           path{
