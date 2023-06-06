@@ -1,7 +1,7 @@
 <template>
   <div class="container">
       <div class="d-flex align-items-center justify-content-center">
-          <div class="card">
+          <div class="card mb-5">
               <div class="card-body mb-5">
                   <h1 class="text-center my-3">Реєстрація</h1>
                   <Form class="row d-flex align-items-center justify-content-center" @submit="handleSubmit">
@@ -68,7 +68,7 @@
                             <span class="text-danger">{{ message }}</span>
                           </ErrorMessage>
                       </div>
-                      <div class="col-10 mt-5 text-center">
+                      <div class=" mt-5 text-center">
                           <button type="submit" :disabled="processing" class="btn btn-light btn-block">
                               {{ processing ? "Зачекайте, будь-ласка" : "Зареєструватися" }}
                               <span v-show="processing" class="spinner-border spinner-border-sm mr-1"></span>
@@ -170,11 +170,14 @@ export default {
   .card{
       border-radius: 50px;
       background-color: #FEA2048C;
-      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25) !important;      
       .btn{
           padding:10px 50px;
           font-size:20px;
           border-radius: 20px;
+          @media (max-width:768px){
+            font-size:14px;
+        }
       }
       .required .control-label:after {
           content:" *";
@@ -182,9 +185,16 @@ export default {
       }
       .form-control{
           border-radius: 20px;
+          @media (max-width:768px){
+            font-size:14px;
+          }
           &:focus{
             box-shadow: none;
           }
+      }
+      @media (max-width:768px){
+        width:100%;
+        font-size:14px;
       }
       @media (min-width:768px) {
           width:75%;
