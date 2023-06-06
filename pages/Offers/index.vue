@@ -100,7 +100,7 @@
     </div>    
     <div class="offers-section_sort mt-3 d-flex flex-row-reverse">
       <div class="col col-lg-3">
-        <VueSelect v-model="status" :value="params.createSort||params.priceSort" :options="sorts" label="label" class="offers-section_select " placeholder="Спочатку новіші">
+        <VueSelect v-model="sort" :value="params.createSort||params.priceSort" :options="sorts" label="label" class="offers-section_select " placeholder="Спочатку новіші">
           <template #option="{ label, createSort, priceSort }">
             <li @click="setSorting(createSort,priceSort)">{{ label }}</li>
           </template>
@@ -130,6 +130,7 @@ import  VueSelect  from "vue-select";
         cities:[],        
         collapsed:false,
         status:'',
+        sort:'',
         rental_statuses:['В оренді','Не в оренді','Не вказано'],
         sorts:[
           {
