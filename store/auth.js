@@ -36,7 +36,7 @@ export const useAuthStore = defineStore("auth", {
             this.token = response.token;
             this.user=response.user
             localStorage.setItem('token',this.token); 
-            router.push({path:'/'});         
+            useRouter().push({path:'/'});         
           }
         });                        
       },
