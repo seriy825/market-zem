@@ -25,7 +25,7 @@ export const useUserStore = defineStore("user", {
             method:'POST',
             body:updatedUser,
           }).then(response=>{
-            this.user=response;
+            useAuthStore().user=response;
           });
         }
         catch(err){
