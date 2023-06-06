@@ -1,7 +1,7 @@
 <template>
   <client-only>   
     <section class="listings-section" :style="$route.path=='/offers'?'margin-top:0':'margin-top:50px'">
-      <h2 class="listings-section_header" :style="$route.path=='/offers'||$route.path==='/user/offers'?'display:none':''">
+      <h2 class="listings-section_header" :style="$route.path=='/offers'||$route.path==='/user/offers'||$route.path==='/user/favorites'?'display:none':''">
         {{ isAdmin && !checkRoute() ? 'Оголошення очікуючі підтверждення':'Оголошення'}}
       </h2>
       <div :class="$route.path!=='/'?'':'d-flex row'" v-if="listings.length>0">
@@ -105,6 +105,10 @@ import { useAuthStore } from '~/store/auth';
             await this.fetchListingsByUser(window.location.search);
             this.processing=false;
           }
+          else if (this.$route.path==='/user/favorites'){
+            await this.fetchFavoritesByUser(window.location.search);
+            this.processing=false;
+          }
           else{
             await this.fetchListingsForUser(window.location.search);              
             this.processing=false;
@@ -121,7 +125,7 @@ import { useAuthStore } from '~/store/auth';
         }          
     },
     methods:{
-      ...mapActions(useListingStore,['fetchListingsForUser','fetchListingsByUser','fetchListingsForAdmin']),
+      ...mapActions(useListingStore,['fetchListingsForUser','fetchListingsByUser','fetchListingsForAdmin','fetchFavoritesByUser']),
       checkRoute(){
         return this.$route.path==='/'|| this.$route.path==='/offers';
       },
