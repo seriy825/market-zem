@@ -45,6 +45,7 @@ export const useListingStore = defineStore("listings", {
       },
       async fetchListingsForUser(data){
         try{          
+          this.listings = null;          
           data ? data+='&approved=1' : data='?approved=1';
           return await $fetch(useRuntimeConfig().public.backendUrl+'/api/listings'+data).then(response=>{ 
             this.listings = response.data;
@@ -64,6 +65,7 @@ export const useListingStore = defineStore("listings", {
       },   
       async fetchListingsByUser(data){
         try{          
+          this.listings = null;          
           const {id} = useAuthStore().user;          
           return await $fetch(useRuntimeConfig().public.backendUrl+'/api/user/listings/'+id+data).then(response=>{ 
             this.listings = response.data;
@@ -83,6 +85,7 @@ export const useListingStore = defineStore("listings", {
       },  
       async fetchFavoritesByUser(data){
         try{          
+          this.listings = null;          
           const {id} = useAuthStore().user;          
           return await $fetch(useRuntimeConfig().public.backendUrl+'/api/user/favorites/'+id+data).then(response=>{ 
             this.listings = response.data;
@@ -102,6 +105,7 @@ export const useListingStore = defineStore("listings", {
       }, 
       async fetchListingsForAdmin(data){
         try{          
+          this.listings = null;          
           data ? data+='&approved=0' : data='?approved=0';
           return await $fetch(useRuntimeConfig().public.backendUrl+'/api/listings'+data).then(response=>{
             this.listings = response.data;

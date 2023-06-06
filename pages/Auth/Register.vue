@@ -1,9 +1,15 @@
 <template>
   <div class="container">
       <div class="d-flex align-items-center justify-content-center">
-          <div class="card">
+          <div class="card mb-5">
               <div class="card-body mb-5">
                   <h1 class="text-center my-3">Реєстрація</h1>
+                  <div class="alert alert-danger" role="alert" v-if="validationErrors">
+                      <ul class="mb-0">
+                          <li v-if="validationErrors.email">Вказана пошта вже зареєстрована!</li>
+                          <li v-if="validationErrors.phone">Вказаний номере телефону не відповідає правильному формату! (+380 хх ххх хххх)</li>
+                      </ul>
+                  </div>
                   <Form class="row d-flex align-items-center justify-content-center" @submit="handleSubmit">
                       <div class="form-group col-10 my-2 required">
                           <label for="name" class="control-label">Ім'я</label>
@@ -68,7 +74,7 @@
                             <span class="text-danger">{{ message }}</span>
                           </ErrorMessage>
                       </div>
-                      <div class="col-10 mt-5 text-center">
+                      <div class=" mt-5 text-center">
                           <button type="submit" :disabled="processing" class="btn btn-light btn-block">
                               {{ processing ? "Зачекайте, будь-ласка" : "Зареєструватися" }}
                               <span v-show="processing" class="spinner-border spinner-border-sm mr-1"></span>
@@ -104,7 +110,7 @@ export default {
           birthdate:'',
           phone:''
         },
-        validationErrors:{},
+        validationErrors:null,
         processing:false
       }
   },
@@ -113,7 +119,13 @@ export default {
     async handleSubmit(values){          
       this.processing=!this.processing;
       const response = await this.register(values).then(this.processing=!this.processing);
-      return response?.status==200;
+      if (response?.status==200){
+        return true;
+      }
+      else {
+        this.validationErrors=response;
+        return false;
+      }
     },
     isEmail(value){
       if (!value)
@@ -170,11 +182,14 @@ export default {
   .card{
       border-radius: 50px;
       background-color: #FEA2048C;
-      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25) !important;      
       .btn{
           padding:10px 50px;
           font-size:20px;
           border-radius: 20px;
+          @media (max-width:768px){
+            font-size:14px;
+        }
       }
       .required .control-label:after {
           content:" *";
@@ -182,9 +197,16 @@ export default {
       }
       .form-control{
           border-radius: 20px;
+          @media (max-width:768px){
+            font-size:14px;
+          }
           &:focus{
             box-shadow: none;
           }
+      }
+      @media (max-width:768px){
+        width:100%;
+        font-size:14px;
       }
       @media (min-width:768px) {
           width:75%;
