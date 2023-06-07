@@ -12,6 +12,9 @@ export default defineNuxtConfig({
                     crossorigin:'anonymous',
                 }
             ],
+            meta:[
+                {name:'google-site-verification',content:'wKgE4VlCreO64OFfT94eFIU7asFjSUdVMwICh_70zl8'}
+            ]
         },        
     },
     runtimeConfig:{
