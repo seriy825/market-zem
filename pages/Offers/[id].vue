@@ -155,7 +155,7 @@ import { useAuthStore } from '~/store/auth';
       },
       checkFavoriteListing(){
         if (this.listing.favorites)
-          return this.listing.favorites.find(item=>item.id===this.user.id);
+          return this.listing.favorites.find(item=>item.id===this.user?.id);
         else
           return false;
       }
