@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="listings-section_buttons d-flex justify-content-end" v-if="$route.path=='/'">
-        <NuxtLink :to="{path:'/offers'}" class="btn listings-section_button" v-if="listings.length>0">Всі оголошення</NuxtLink>  
+        <NuxtLink :to="{path:'/offers'}" class="btn listings-section_button" v-if="listings?.length>0">Всі оголошення</NuxtLink>  
         <NuxtLink :to="{path:'/offers/create'}" class="btn btn-warning" v-else-if="authenticated">Додати оголошення</NuxtLink>  
         <NuxtLink to="/auth/login" class="btn btn-warning" v-else >Додати оголошення</NuxtLink>
       </div>
