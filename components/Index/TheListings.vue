@@ -4,7 +4,7 @@
       <h2 class="listings-section_header" :style="$route.path=='/offers'||$route.path==='/user/offers'||$route.path==='/user/favorites'?'display:none':''">
         {{ isAdmin && !checkRoute() ? 'Оголошення очікуючі підтверждення':'Оголошення'}}
       </h2>
-      <div :class="$route.path!=='/'?'':'d-flex row'" v-if="listings.length>0">
+      <div :class="$route.path!=='/'?'':'d-flex row'" v-if="listings?.length>0">
         <div :class="$route.path!=='/'?'mt-5':'col-md-12 col-lg-6 col-xl-4 mt-4'" v-for="listing in listings" :key="listing.id">
           <Listing :listing="listing"/> 
         </div>                  
