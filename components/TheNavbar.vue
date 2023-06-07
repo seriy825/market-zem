@@ -22,7 +22,7 @@
                         <li class="nav-item" v-if="isAdmin">
                             <NuxtLink to="/admin" class="nav-link">Адмін-панель</NuxtLink>
                         </li>
-                        <li class="nav-item" v-if="authenticated">
+                        <li class="nav-item" v-if="authenticated&&!isAdmin">
                             <NuxtLink to="/offers/create" class="nav-link">Додати оголошення</NuxtLink>
                         </li>
                     </ul>
