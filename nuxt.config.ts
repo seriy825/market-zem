@@ -12,9 +12,6 @@ export default defineNuxtConfig({
                     crossorigin:'anonymous',
                 }
             ],
-            link: [
-                { rel: 'icon', type: 'image/x-icon', href: './assets/img/logo.png' }
-            ] 
         },        
     },
     runtimeConfig:{
