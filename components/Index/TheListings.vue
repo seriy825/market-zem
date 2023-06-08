@@ -29,10 +29,10 @@
         <nav class="mt-5 d-flex justify-content-end align-items-end">
           <ul class="pagination">
             <li class="page-item" aria-current="page">
-              <button class="page-link" v-if="prev_page_url !== null" @click="changePage(1)">&lt;</button>
+              <button class="page-link" v-if="prev_page_url !== null" @click="changePage(1)">&lt;&lt;</button>
             </li>
             <li class="page-item">
-              <button class="page-link" v-if="prev_page_url !== null" @click="changePage(current_page-1)">&lt;&lt;</button>
+              <button class="page-link" v-if="prev_page_url !== null" @click="changePage(current_page-1)">&lt;</button>
             </li>
             <li class="page-item">
               <button class="page-link" @click="changePage(current_page)">{{current_page}}</button>
