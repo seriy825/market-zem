@@ -89,7 +89,7 @@ import 'vue3-tel-input/dist/vue3-tel-input.css'
       ...mapState(useUserStore,['errors'])
     },
     async mounted(){
-      this.updatedUser=this.user;
+      this.updatedUser={...this.user};
       this.clearErrors();
     },
     methods:{
@@ -100,7 +100,7 @@ import 'vue3-tel-input/dist/vue3-tel-input.css'
           this.updateShow=!this.updateShow;
         }
         else{
-          this.updatedUser=this.user;
+          this.updatedUser={...this.user};
         }
       },
       isPhone(value){

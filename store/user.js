@@ -15,13 +15,12 @@ export const useUserStore = defineStore("user", {
             method:'POST',
             body:updatedUser,
           }).then(response=>{
-            console.log(response);
             if (response.status===200){
               useAuthStore().user=response.user;
               this.errors=null;
             }
             else if (response.email||response.phone||response.name){
-              this.errors='Введені некоректні дані!';              
+              this.errors='Введені некоректні дані!';        
             }            
           });
         }
