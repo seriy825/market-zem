@@ -10,33 +10,33 @@
                 </button>
                 <div class="collapse navbar-collapse mt-3" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <NuxtLink to="/offers" class="nav-link">Пошук</NuxtLink>
+                        <li class="nav-item mx-auto mx-lg-0">
+                            <NuxtLink to="/offers" class="nav-link" >Пошук</NuxtLink>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mx-auto mx-lg-0">
                             <NuxtLink to="/agents" class="nav-link">Агенти</NuxtLink>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mx-auto mx-lg-0">
                             <NuxtLink to="/how-to-work-with-system" class="nav-link">Як працювати з системою?</NuxtLink>
                         </li>
-                        <li class="nav-item" v-if="isAdmin">
+                        <li class="nav-item mx-auto mx-lg-0" v-if="isAdmin">
                             <NuxtLink to="/admin" class="nav-link">Адмін-панель</NuxtLink>
                         </li>
-                        <li class="nav-item" v-if="authenticated&&!isAdmin">
+                        <li class="nav-item mx-auto mx-lg-0" v-if="authenticated&&!isAdmin">
                             <NuxtLink to="/offers/create" class="nav-link">Додати оголошення</NuxtLink>
                         </li>
                     </ul>
                     <div class="d-flex gap-3" v-if="!authenticated">
-                        <NuxtLink to="/auth/login" class="nav-link fw-bold">Увійти</NuxtLink>
-                        <NuxtLink to="/auth/register" class="nav-link fw-bold">Зареєструватися</NuxtLink>
+                        <NuxtLink to="/auth/login" class="nav-link fw-bold mx-auto mx-lg-0">Увійти</NuxtLink>
+                        <NuxtLink to="/auth/register" class="nav-link fw-bold mx-auto mx-lg-0">Зареєструватися</NuxtLink>
                     </div>
                     <div class="d-flex gap-5" v-else>
-                        <NuxtLink class="user-logo" to="/user/profile" v-if="!isAdmin">
+                        <NuxtLink class="user-logo mx-auto mx-lg-0" to="/user/profile" v-if="!isAdmin">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#000" class="bi bi-person" viewBox="0 0 16 16">
                                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
                             </svg>
                         </NuxtLink>
-                        <NuxtLink to="/" class="nav-link fw-bold" @click="logout">Вийти</NuxtLink>    
+                        <NuxtLink to="/" class="nav-link fw-bold mx-auto mx-lg-0" @click="logout">Вийти</NuxtLink>    
                     </div>
                 </div>
             </div>
