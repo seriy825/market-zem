@@ -20,7 +20,8 @@ export const useUserStore = defineStore("user", {
               this.errors=null;
             }
             else if (response.email||response.phone||response.name){
-              this.errors='Введені некоректні дані!';        
+              this.errors='Введені некоректні дані!';       
+              useAuthStore().user=user;       
             }            
           });
         }
