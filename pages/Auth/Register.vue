@@ -4,6 +4,12 @@
           <div class="card mb-5">
               <div class="card-body mb-5">
                   <h1 class="text-center my-3">Реєстрація</h1>
+                  <div class="alert alert-danger" role="alert" v-if="validationErrors">
+                      <ul class="mb-0">
+                          <li v-if="validationErrors.email">Вказана пошта вже зареєстрована!</li>
+                          <li v-if="validationErrors.phone">Вказаний номере телефону не відповідає правильному формату! (+380 хх ххх хххх)</li>
+                      </ul>
+                  </div>
                   <Form class="row d-flex align-items-center justify-content-center" @submit="handleSubmit">
                       <div class="form-group col-10 my-2 required">
                           <label for="name" class="control-label">Ім'я</label>
@@ -113,7 +119,13 @@ export default {
     async handleSubmit(values){          
       this.processing=!this.processing;
       const response = await this.register(values).then(this.processing=!this.processing);
-      return response?.status==200;
+      if (response?.status==200){
+        return true;
+      }
+      else {
+        this.validationErrors=response;
+        return false;
+      }
     },
     isEmail(value){
       if (!value)
