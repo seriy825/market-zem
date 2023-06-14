@@ -110,7 +110,7 @@ export default {
           birthdate:'',
           phone:''
         },
-        validationErrors:{},
+        validationErrors:null,
         processing:false
       }
   },
