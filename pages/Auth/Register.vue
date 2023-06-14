@@ -4,7 +4,7 @@
           <div class="card mb-5">
               <div class="card-body mb-5">
                   <h1 class="text-center my-3">Реєстрація</h1>
-                  <div class="alert alert-danger" role="alert" v-if="validationErrors">
+                  <div class="alert alert-danger mx-5 text-center" role="alert" v-if="validationErrors">
                       <ul class="mb-0">
                           <li v-if="validationErrors.email">Вказана пошта вже зареєстрована!</li>
                           <li v-if="validationErrors.phone">Вказаний номере телефону не відповідає правильному формату! (+380 хх ххх хххх)</li>
@@ -118,11 +118,13 @@ export default {
     ...mapActions(useAuthStore,['register']),    
     async handleSubmit(values){          
       this.processing=!this.processing;
-      const response = await this.register(values).then(this.processing=!this.processing);
-      if (response?.status==200){
+      const response = await this.register(values);
+      if (response.token) {
+        this.processing=!this.processing;
         return true;
       }
       else {
+        this.processing=!this.processing;
         this.validationErrors=response;
         return false;
       }

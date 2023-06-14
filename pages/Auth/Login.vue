@@ -4,7 +4,7 @@
           <div class="card mb-5">
               <div class="card-body mb-5">
                 <h1 class="text-center my-3">Вхід</h1>
-                <div class="alert alert-danger" role="alert" v-if="error">
+                <div class="alert alert-danger mx-5 text-center" role="alert" v-if="error">
                     <ul class="mb-0">
                         <li>{{ error }}</li>
                     </ul>
@@ -65,10 +65,13 @@ export default {
         ...mapActions(useAuthStore,['login']),    
         async handleSubmit(data){       
             this.processing=!this.processing;
-            const response = await this.login(data).then(this.processing=!this.processing).catch(err=>{
-                if (err) this.error = 'Не правильно введена пошта або пароль!';
+            await this.login(data).then(this.processing=!this.processing).catch(err=>{
+                if (err) {
+                    this.error = 'Не правильно введена пошта або пароль!';
+                    return false;
+                }                
             });
-            return response?.status===200;
+            return true;
         },
         isEmail(value){
             if (!value) {
