@@ -39,5 +39,10 @@ export default defineNuxtConfig({
     ],
     veeValidate: {        
         autoImports: true,        
+    },
+    vite:{
+        optimizeDeps:{
+            include:['vue3-tel-input']
+        }
     }
 })
